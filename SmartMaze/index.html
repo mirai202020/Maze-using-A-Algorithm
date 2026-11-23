@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartMaze</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="SmartMaze.png">
+
+ 
+  <script src="js/maze.js" defer></script>
+  <script src="js/ai-mode.js" defer></script>
+  <script src="js/human-mode.js" defer></script>
+  <script src="js/app.js" defer></script>
+  <script src="js/sound.js" defer></script>
+</head>
+
+<body>
+ 
+  <section class="home-screen" id="homeScreen">
+
+    <h2>SMARTMAZE</h2>
+
+    <p class="home-subtitle">
+      Energy-Aware Maze-Solving Agent
+    </p>
+
+    <p class="home-description">
+      Navigate the maze manually or let A* find an efficient path.
+    </p>
+
+    <div class="mode-cards">
+
+    
+      <article class="mode-card">
+        <div class="mode-icon">👤</div>
+        <h3>HUMAN MODE</h3>
+        <p>Navigate the<br>maze yourself</p>
+        <button class="play-button" id="homeHumanBtn">
+          PLAY
+        </button>
+      </article>
+
+ 
+      <article class="mode-card">
+        <div class="mode-icon">🤖</div>
+        <h3>AI MODE</h3>
+        <p>Let A* find<br>a path</p>
+        <button class="play-button" id="homeAiBtn">
+          SOLVE
+        </button>
+      </article>
+
+    </div>
+
+    <p class="home-config">
+      10 × 10 Maze • 30 Energy • A* Search
+    </p>
+
+  </section>
+
+
+ 
+  <main class="game-layout" id="gameScreen" hidden>
+
+ 
+    <section class="panel maze-panel">
+
+      <div class="toolbar">
+        <button class="primary-button" id="aiBtn">
+          START AI
+        </button>
+
+        <button class="secondary-button" id="humanBtn">
+          HUMAN MODE
+        </button>
+
+        <button class="warning-button" id="resetBtn">
+          RESTART
+        </button>
+
+        <button class="plain-button" id="homeBtn">
+          HOME
+        </button>
+      </div>
+ 
+      <div
+        id="maze"
+        class="maze-grid"
+        aria-label="10 by 10 maze">
+      </div>
+ 
+      <div class="legend">
+        <span><i class="swatch cost1"></i>Cost 1</span>
+        <span><i class="swatch cost3"></i>Cost 3</span>
+        <span><i class="swatch cost5"></i>Cost 5</span>
+        <span><i class="swatch wall"></i>Wall</span>
+        <span>🟢 Start</span>
+        <span>🔵 Goal</span>
+      </div>
+
+    </section>
+
+ 
+    <aside class="panel information-panel">
+
+      <h2>Navigation Information</h2>
+
+      <div class="stats-grid">
+
+        <div class="stat">
+          <small>Mode</small>
+          <strong id="mode">Ready</strong>
+        </div>
+
+        <div class="stat">
+          <small>Energy</small>
+          <strong id="energy">30 / 30</strong>
+        </div>
+
+        <div class="stat">
+          <small>Energy Used</small>
+          <strong id="used">0</strong>
+        </div>
+
+        <div class="stat">
+          <small>Steps</small>
+          <strong id="steps">0</strong>
+        </div>
+
+        <div class="stat">
+          <small>Nodes Explored</small>
+          <strong id="nodes">0</strong>
+        </div>
+
+        <div class="stat">
+          <small>Status</small>
+          <strong id="result">Ready</strong>
+        </div>
+
+      </div>
+ 
+      <div class="status-box" id="status">
+        Choose <b>START AI</b> to let A* find a path, or choose
+        <b>HUMAN MODE</b> to navigate manually.
+      </div>
+ 
+      <h2 class="subheading">Human Controls</h2>
+
+      <p class="hint">
+        In Human Mode, use the arrow keys or W, A, S, and D
+        to move one cell at a time.
+      </p>
+
+      <div class="key-row">
+        <span class="key">↑</span>
+      </div>
+
+      <div class="key-row">
+        <span class="key">←</span>
+        <span class="key">↓</span>
+        <span class="key">→</span>
+      </div>
+
+ 
+      <h2 class="subheading">Solution Path</h2>
+
+      <div id="pathText" class="path-text">
+        No path generated yet.
+      </div>
+
+    </aside>
+
+  </main>
+
+
+ 
+  <section class="results-screen" id="resultsScreen" hidden>
+
+    <div class="results-container">
+
+      <h1 id="resultTitle">
+        MAZE SOLVED!
+      </h1>
+
+      <p class="results-subtitle">
+      <p id="resultSubtitle">AI Mode Performance Results</p>
+      </p>
+
+      <div class="results-content">
+ 
+        <div class="results-details">
+
+          <h3>Solution Found</h3>
+
+          <p>
+            Path Cost:
+            <strong id="finalCost">0</strong>
+          </p>
+
+          <p>
+            Remaining Energy:
+            <strong id="finalEnergy">0</strong>
+          </p>
+
+          <p>
+            Steps:
+            <strong id="finalSteps">0</strong>
+          </p>
+
+          <p>
+            Nodes Explored:
+            <strong id="finalNodes">0</strong>
+          </p>
+
+          <p>
+            Search Time:
+            <strong id="finalTime">0.00 seconds</strong>
+          </p>
+
+        </div>
+
+
+       
+        <div class="results-path">
+
+          <h3>Solution Path</h3>
+
+          <p id="finalPath">
+            S → G
+          </p>
+
+   
+          <div class="results-buttons">
+
+            <button
+              class="primary-button"
+              id="playAgainBtn">
+              TRY AGAIN
+            </button>
+
+            <button
+              class="plain-button"
+              id="backHomeBtn">
+              BACK TO HOME
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+ 
+  <audio id="backgroundMusic" loop preload="auto">
+    <source src="audio/mazesong.mp3" type="audio/mpeg">
+  </audio>
+
+ 
+  <audio id="clickSound" preload="auto">
+    <source src="audio/click-sound.mp3" type="audio/mpeg">
+  </audio>
+
+
+ 
+  <footer>
+    © Made by Group 10 | 2026
+  </footer>
+
+</body>
+</html>
